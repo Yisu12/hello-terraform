@@ -14,22 +14,32 @@ provider "aws" {
 }
 
 resource "aws_instance" "app_server" {
-  ami                     = "ami-0b752bf1df193a6c4"
-  instance_type           = "t2.micro"
-  key_name                = "clave-lucatic"
+  ami                    = "ami-0b752bf1df193a6c4"
+  instance_type          = "t2.micro"
+  key_name               = "clave-lucatic"
   vpc_security_group_ids = ["sg-0562854c9b1329776"]
 
   tags = {
     Name = var.instance_name
   }
-  user_data = <<EOF
-        #! /bin/bash
-	#!/bin/sh
-	amazon-linux-extras install -y docker
-	service docker start
-	systemctl enable docker
-	usermod -a -G docker ec2-user
-	pip3 install docker-compose
-  EOF
+  connection {
+    type        = "ssh"
+    host        = self.public_ip
+    user        = "ec2-user"
+    private_key = file("/home/sinensia/.ssh/clave-lucatic.pem")
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "sudo yum install -y httpd",
+      "sudo systemctl start httpd",
+      "sudo systemctl enable httpd",
+      "sudo chown -R ec2-user /var/www/html",
+    ]
+  }
+
+  provisioner "file" {
+    source      = "../hello-2048/public_html/"
+    destination = "/var/www/html"
+  }
 }
 
