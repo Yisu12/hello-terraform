@@ -25,6 +25,6 @@ resource "aws_instance" "app_server" {
   }
 
   provisioner "local-exec" {
-    command = "sleep 20 && ansible-playbook -i aws_ec2.yml ec2.yml"
+    command = "ansible-playbook -i aws_ec2.yml ec2.yml"
   }
 }
