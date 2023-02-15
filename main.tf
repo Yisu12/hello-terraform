@@ -20,7 +20,16 @@ resource "aws_instance" "app_server" {
   vpc_security_group_ids = ["sg-0562854c9b1329776"]
 
   tags = {
-    Name = "ExampleServerInstance"
+    Name = var.instance_name
   }
+  user_data = <<EOF
+        #! /bin/bash
+	#!/bin/sh
+	amazon-linux-extras install -y docker
+	service docker start
+	systemctl enable docker
+	usermod -a -G docker ec2-user
+	pip3 install docker-compose
+  EOF
 }
 
