@@ -21,25 +21,10 @@ resource "aws_instance" "app_server" {
 
   tags = {
     Name = var.instance_name
-  }
-  connection {
-    type        = "ssh"
-    host        = self.public_ip
-    user        = "ec2-user"
-    private_key = file("/home/sinensia/.ssh/clave-lucatic.pem")
-  }
-  provisioner "remote-exec" {
-    inline = [
-      "sudo yum install -y httpd",
-      "sudo systemctl start httpd",
-      "sudo systemctl enable httpd",
-      "sudo chown -R ec2-user /var/www/html",
-    ]
+    APP  = "vue2048"
   }
 
-  provisioner "file" {
-    source      = "../hello-2048/public_html/"
-    destination = "/var/www/html"
+  provisioner "local-exec" {
+    command = "sleep 20 && ansible-playbook -i aws_ec2.yml ec2.yml"
   }
 }
-
