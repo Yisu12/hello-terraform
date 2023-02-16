@@ -37,9 +37,7 @@
         mode: "0644"
         directory_mode: "0755"
           
-    - name: deploy Docker Compose stack
-        community.docker.docker_compose:
-          project_src: /home/ec2-user
-          files:
-          - docker-compose.yml
-    
+    - name: Run container
+      shell:
+        cmd: "docker-compose -f docker-compose.yml up -d"
+        chdir: /home/ec2-user
