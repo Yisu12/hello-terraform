@@ -39,5 +39,5 @@
           
     - name: Run container
       shell:
-        cmd: "docker-compose -f docker-compose.yml up -d"
+        cmd: "/usr/local/bin/docker-compose up -d"
         chdir: /home/ec2-user
