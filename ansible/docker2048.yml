@@ -12,11 +12,12 @@
         timeout: 300
 
     - name: Install Docker
-      command: amazon-linux-extras install -y docker
+      yum:
+        name: docker
 
     - name: Install docker-compose
       pip:
-        name: docker-compose
+        name: docker-compose>1.7.0,<2.0.0
         executable: pip3
 
     - name: Start and enable docker
@@ -29,9 +30,6 @@
       user:
         name: ec2-user
         group: docker
-   
-    - name: Pull package
-      command: docker pull ghcr.io/yisu12/hello-terraform:latest
 
     - name: Copy docker-compose
       copy:
@@ -42,7 +40,9 @@
         mode: "0644"
         directory_mode: "0755"
           
-    - name: Run container
-      shell:
-        cmd: "/usr/local/bin/docker-compose up -d"
-        chdir: /home/ec2-user
+    - name: Pull image and run it
+      community.docker.docker_compose:
+        project_src: /home/ec2-user/
+        pull: true
+      vars:
+        ansible_python_interpreter: /usr/bin/python3
