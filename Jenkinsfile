@@ -6,7 +6,7 @@ pipeline {
             steps {
                 sh 'docker-compose build'
                 sh 'git tag 1.0.${BUILD_NUMBER}'
-                sh 'docker tag ghcr.io/yisu12/hello-2048:latest ghcr.io/yisu12/hello-2048:1.0.${BUILD_NUMBER}'
+                sh 'docker tag ghcr.io/yisu12/hello-terraform:latest ghcr.io/yisu12/hello-terraform:1.0.${BUILD_NUMBER}'
                 sshagent(['git2']) {
                     sh 'git push --tags'
                 }
@@ -16,7 +16,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'github-token', variable: 'CR_PAT')]) {
                     sh 'echo $CR_PAT | docker login ghcr.io -u yisu12 --password-stdin'
-                    sh "docker push ghcr.io/yisu12/hello-2048:1.0.${BUILD_NUMBER}"
+                    sh "docker push ghcr.io/yisu12/hello-terraform:1.0.${BUILD_NUMBER}"
                 }
             }
         }
