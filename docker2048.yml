@@ -36,6 +36,10 @@
         group: ec2-user
         mode: "0644"
         directory_mode: "0755"
-
-    - name: Run image
-      ansible.builtin.command: pwd
+          
+    - name: deploy Docker Compose stack
+        community.docker.docker_compose:
+          project_src: /home/ec2-user
+          files:
+          - docker-compose.yml
+    
