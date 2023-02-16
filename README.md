@@ -6,4 +6,4 @@ hello-terraform is an app that deploys the 2048 game on an AWS instance, using:
 - Ansible
 - Docker
 - AWS
-- Git / GitHub
+- GitHub
