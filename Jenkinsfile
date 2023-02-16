@@ -29,8 +29,8 @@ pipeline {
             steps {
                 withAWS(credentials: 'aws-credentials', region: 'eu-west-1') {
                     sshagent(['ssh-amazon']) {
-                        sh 'terraform init'
-                        sh 'terraform apply -auto-approve'
+                        sh 'terraform -chdir=./terraform init'
+                        sh 'terraform -chdir=./terraform apply -auto-approve'
                     }  
                 }
             }
