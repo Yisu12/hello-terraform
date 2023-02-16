@@ -28,8 +28,14 @@
     - name: Pull package
       ansible.builtin.command: docker pull ghcr.io/yisu12/hello-2048:latest
 
-    - name: Download docker-compose.yml
-      ansible.builtin.command: wget https://raw.githubusercontent.com/Yisu12/hello-terraform/main/docker-compose.yml
+    - name: Copy docker-compose
+      copy:
+        src: ../docker-compose.yml
+        dest: /home/ec2-user/
+        owner: ec2-user
+        group: ec2-user
+        mode: "0644"
+        directory_mode: "0755"
 
     - name: Run image
       ansible.builtin.command: docker-compose up -d
