@@ -17,6 +17,7 @@
     - name: Install docker-compose
       pip:
         name: docker-compose
+        executable: pip3
 
     - name: Start and enable docker
       systemd:
