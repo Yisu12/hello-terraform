@@ -17,6 +17,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'github-token', variable: 'CR_PAT')]) {
                     sh 'echo $CR_PAT | docker login ghcr.io -u yisu12 --password-stdin'
                     sh "docker push ghcr.io/yisu12/hello-terraform:1.0.${BUILD_NUMBER}"
+                    sh "docker push ghcr.io/yisu12/hello-terraform:latest"
                 }
             }
         }
@@ -43,5 +44,6 @@ pipeline {
         }
     }
 }
+
 
 
