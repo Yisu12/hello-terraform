@@ -27,6 +27,9 @@
     
     - name: Pull package
       ansible.builtin.command: docker pull ghcr.io/yisu12/hello-2048:latest
-    
+
+    - name: Download docker-compose.yml
+      ansible.builtin.command: wget https://raw.githubusercontent.com/Yisu12/hello-terraform/main/docker-compose.yml
+
     - name: Run image
       ansible.builtin.command: docker-compose up -d
