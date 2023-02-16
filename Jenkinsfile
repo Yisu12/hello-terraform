@@ -8,7 +8,7 @@ pipeline {
                 sh 'git tag 1.0.${BUILD_NUMBER}'
                 sh 'docker tag ghcr.io/yisu12/hello-terraform:latest ghcr.io/yisu12/hello-terraform:1.0.${BUILD_NUMBER}'
                 sshagent(['git2']) {
-                    sh 'git push --tags'
+                    sh 'git push git@github.com:yisu12/hello-teraform.git --tags'
                 }
             }
         }
