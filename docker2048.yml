@@ -38,4 +38,4 @@
         directory_mode: "0755"
 
     - name: Run image
-      ansible.builtin.command: docker-compose up -d
+      ansible.builtin.command: pwd
