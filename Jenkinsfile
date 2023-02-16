@@ -35,7 +35,7 @@ pipeline {
               steps{
                     withAWS(credentials: 'aws-credentials', region: 'eu-west-1') {
                          sshagent(['ssh-amazon']) {
-                                 sh 'ansible-playbook -i aws_ec2.yml ec2.yml'
+                                 sh 'ansible-playbook -i aws_ec2.yml docker2048.yml'
                          }
                     }
 
