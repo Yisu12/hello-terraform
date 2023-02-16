@@ -4,7 +4,9 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'docker-compose build'
+                dir('./docker'){
+                    sh 'docker-compose build'
+                }
                 sh 'git tag 1.0.${BUILD_NUMBER}'
                 sh 'docker tag ghcr.io/yisu12/hello-terraform:latest ghcr.io/yisu12/hello-terraform:1.0.${BUILD_NUMBER}'
                 sshagent(['git2']) {
@@ -12,6 +14,7 @@ pipeline {
                 }
             }
         }
+
         stage('Package') {
             steps {
                 withCredentials([string(credentialsId: 'github-token', variable: 'CR_PAT')]) {
@@ -32,15 +35,15 @@ pipeline {
                 }
             }
         }
-        stage('Install') {
-              steps{
-                    withAWS(credentials: 'aws-credentials', region: 'eu-west-1') {
-                         sshagent(['ssh-amazon']) {
-                                 sh 'ansible-playbook -i aws_ec2.yml docker2048.yml'
-                         }
-                    }
 
-              }
+        stage('Install') {
+            steps{
+                withAWS(credentials: 'aws-credentials', region: 'eu-west-1') {
+                    dir('./ansible') {
+                        ansiblePlaybook(credentialsId: 'ssh-amazon', inventory: 'aws_ec2.yml', playbook: 'docker2048.yml') 
+                    }
+                }
+            }
         }
     }
 }
